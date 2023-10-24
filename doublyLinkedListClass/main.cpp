@@ -4,7 +4,7 @@
 
 int main()
 {
-	std::cout << "Doubly Linked List Class v1.0.0\n\n";
+	std::cout << "Doubly Linked List Class v1.0.1\n\n";
 	int result;
 	int nodeCount;
 	int data;
