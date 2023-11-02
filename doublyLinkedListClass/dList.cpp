@@ -25,7 +25,11 @@ dNode* dList::init(int data)
 
 int dList::addNodeFront(dNode** list, int data)
 {
-	if (*list == nullptr) return 1;
+	if (*list == nullptr) // list is empty.
+	{
+		*list = this->init(data);
+		return 0;
+	}
 
 	dNode* head = *list;
 	dNode* newHead = new dNode();
@@ -37,22 +41,29 @@ int dList::addNodeFront(dNode** list, int data)
 	return 0;
 }
 
-int dList::addNodeBack(dNode* list, int data)
+int dList::addNodeBack(dNode** list, int data)
 {
-	if (list == nullptr) return 1;
+	if (*list == nullptr) // list is empty.
+	{
+		*list = this->init(data);
+		return 0;
+	}
 
+	dNode* head = *list;
 	do {
-		if (list->next == nullptr)
+		dNode* curr = *list;
+		if (curr->next == nullptr)
 		{
 			dNode* newNode = new dNode();
 			newNode->data = data;
+			curr->next = newNode;
+			newNode->prev = curr;
 			newNode->next = nullptr;
-			newNode->prev = list;
-			list->next = newNode;
+			*list = head;
 			return 0;
 		}
-		list = list->next;
-	} while (list != nullptr);
+		*list = curr->next;
+	} while (*list != nullptr);
 }
 
 int dList::addNodeByPos(dNode** list, int pos, int data)

@@ -15,10 +15,11 @@
 
 class dList
 {
-public:
+private:
 	dNode* init(int data);
+public:
 	int addNodeFront(dNode** list, int data);
-	int addNodeBack(dNode* list, int data);
+	int addNodeBack(dNode** list, int data);
 	int addNodeByPos(dNode** list, int pos, int data);
 	int deleteNodeFront(dNode** list);
 	int deleteNodeBack(dNode** list);
