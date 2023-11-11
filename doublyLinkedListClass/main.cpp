@@ -4,7 +4,7 @@
 
 int main()
 {
-	std::cout << "Doubly Linked List Class v1.0.3\n\n";
+	std::cout << "Doubly Linked List Class v1.0.4\n\n";
 	int result;
 	int nodeCount;
 	int data;
@@ -16,7 +16,7 @@ int main()
 
 	for (int i = -5; i < 5; i++)
 	{
-		dlist.addNodeBack(&list, pow(i, 4));
+		dlist.addBack(&list, pow(i, 4));
 	}
 	result = dlist.size(list, nodeCount);
 	if (result == 0)

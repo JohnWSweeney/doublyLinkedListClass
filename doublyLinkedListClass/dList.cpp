@@ -23,7 +23,7 @@ dNode* dList::init(int data)
 	return newNode;
 }
 
-int dList::addNodeFront(dNode** list, int data)
+int dList::addFront(dNode** list, int data)
 {
 	if (*list == nullptr) // list is empty.
 	{
@@ -41,7 +41,7 @@ int dList::addNodeFront(dNode** list, int data)
 	return 0;
 }
 
-int dList::addNodeBack(dNode** list, int data)
+int dList::addBack(dNode** list, int data)
 {
 	if (*list == nullptr) // list is empty.
 	{
@@ -66,7 +66,7 @@ int dList::addNodeBack(dNode** list, int data)
 	} while (*list != nullptr);
 }
 
-int dList::addNodeByPos(dNode** list, int pos, int data)
+int dList::addPos(dNode** list, int pos, int data)
 {
 	if (*list == nullptr) return 1; // list is empty.
 
@@ -82,41 +82,38 @@ int dList::addNodeByPos(dNode** list, int pos, int data)
 		*list = newNode;
 		return 0;
 	}
-	else
-	{
-		// check if list has only one node.
-		if (head->next == nullptr) return -1;
-		*list = head->next; // skip head node.
-		int tempPos = 1;
-		do {
-			dNode* curr = *list;
-			if (tempPos == pos) // found pos.
+	// check if list has only one node.
+	if (head->next == nullptr) return -1;
+	*list = head->next; // skip head node.
+	int tempPos = 1;
+	do {
+		dNode* curr = *list;
+		if (tempPos == pos) // found pos.
+		{
+			dNode* before = curr->prev;
+			dNode* after = curr->next;
+			dNode* newNode = new dNode();
+			newNode->data = data;
+			before->next = newNode;
+			newNode->prev = before;
+			newNode->next = curr;
+			curr->prev = newNode;
+			curr->next = after;
+			if (after != nullptr)
 			{
-				dNode* before = curr->prev;
-				dNode* after = curr->next;
-				dNode* newNode = new dNode();
-				newNode->data = data;
-				before->next = newNode;
-				newNode->prev = before;
-				newNode->next = curr;
-				curr->prev = newNode;
-				curr->next = after;
-				if (after != nullptr)
-				{
-					after->prev = curr;
-				}
-				*list = head;
-				return 0;
+				after->prev = curr;
 			}
-			++tempPos;
-			*list = curr->next;
-		} while (*list != nullptr);
-		*list = head; // pos not in list, reset list.
-		return -1;
-	}
+			*list = head;
+			return 0;
+		}
+		++tempPos;
+		*list = curr->next;
+	} while (*list != nullptr);
+	*list = head; // pos not in list, reset list.
+	return -1;
 }
 
-int dList::deleteNodeFront(dNode** list)
+int dList::deleteFront(dNode** list)
 {
 	if (*list == nullptr) return 1;
 
@@ -138,7 +135,7 @@ int dList::deleteNodeFront(dNode** list)
 	}
 }
 
-int dList::deleteNodeBack(dNode** list)
+int dList::deleteBack(dNode** list)
 {
 	if (*list == nullptr) return 1;
 
@@ -164,7 +161,7 @@ int dList::deleteNodeBack(dNode** list)
 	} while (list != nullptr);
 }
 
-int dList::deleteNodeByPos(dNode** list, int pos)
+int dList::deletePos(dNode** list, int pos)
 {
 	if (*list == nullptr) return 1;
 
@@ -217,7 +214,7 @@ int dList::deleteNodeByPos(dNode** list, int pos)
 	return -1;
 }
 
-int dList::deleteNodeByPtr(dNode** list, dNode* &ptr)
+int dList::deletePtr(dNode** list, dNode* &ptr)
 {
 	if (*list == nullptr) return 1;
 	if (ptr == nullptr) return 2;
@@ -410,7 +407,7 @@ int dList::deleteAfterPtr(dNode** list, dNode* ptr)
 	return -1; // ptr not in list.
 }
 
-int dList::returnPtrByPos(dNode* list, int pos, dNode* &ptr)
+int dList::returnPosPtr(dNode* list, dNode* &ptr, int pos)
 {
 	if (list == nullptr) return 1;
 
@@ -427,7 +424,7 @@ int dList::returnPtrByPos(dNode* list, int pos, dNode* &ptr)
 	return -1;
 }
 
-int dList::returnPosByPtr(dNode* list, int &pos, dNode* ptr)
+int dList::returnPtrPos(dNode* list, int &pos, dNode* ptr)
 {
 	if (list == nullptr) return 1;
 	if (ptr == nullptr) return 2;
@@ -466,7 +463,7 @@ int dList::returnBackData(dNode* list, int &data)
 	} while (list != nullptr);
 }
 
-int dList::returnDataByPos(dNode* list, int &data, int pos)
+int dList::returnPosData(dNode* list, int &data, int pos)
 {
 	if (list == nullptr) return 1;
 
@@ -483,7 +480,7 @@ int dList::returnDataByPos(dNode* list, int &data, int pos)
 	return -1;
 }
 
-int dList::returnDataByPtr(dNode* list, int &data, dNode* ptr)
+int dList::returnPtrData(dNode* list, int &data, dNode* ptr)
 {
 	if (list == nullptr) return 1;
 	if (ptr == nullptr) return 2;
@@ -499,7 +496,7 @@ int dList::returnDataByPtr(dNode* list, int &data, dNode* ptr)
 	return -1;
 }
 
-int dList::updateDataByPos(dNode* list, int data, int pos)
+int dList::updatePosData(dNode* list, int pos, int data)
 {
 	if (list == nullptr) return 1;
 
@@ -516,7 +513,7 @@ int dList::updateDataByPos(dNode* list, int data, int pos)
 	return -1;
 }
 
-int dList::updateDataByPtr(dNode* list, int data, dNode* ptr)
+int dList::updatePtrData(dNode* list, dNode* ptr, int data)
 {
 	if (list == nullptr) return 1;
 	if (ptr == nullptr) return 2;
@@ -532,7 +529,7 @@ int dList::updateDataByPtr(dNode* list, int data, dNode* ptr)
 	return -1;
 }
 
-int dList::findDataReturnPos(dNode* list, int data, int &pos)
+int dList::returnDataPos(dNode* list, int data, int &pos)
 {
 	if (list == nullptr) return 1;
 
@@ -549,7 +546,7 @@ int dList::findDataReturnPos(dNode* list, int data, int &pos)
 	return -1;
 }
 
-int dList::findDataReturnPtr(dNode* list, int data, dNode* &ptr)
+int dList::returnDataPtr(dNode* list, int data, dNode* &ptr)
 {
 	if (list == nullptr) return 1;
 
@@ -564,7 +561,7 @@ int dList::findDataReturnPtr(dNode* list, int data, dNode* &ptr)
 	return -1;
 }
 
-int dList::findMinReturnPos(dNode* list, int &min, int &pos)
+int dList::returnMinPos(dNode* list, int &min, int &pos)
 {
 	if (list == nullptr) return 1;
 
@@ -585,7 +582,7 @@ int dList::findMinReturnPos(dNode* list, int &min, int &pos)
 	return 0;
 }
 
-int dList::findMinReturnPtr(dNode* list, int &min, dNode* &ptr)
+int dList::returnMinPtr(dNode* list, int &min, dNode* &ptr)
 {
 	if (list == nullptr) return 1;
 
@@ -604,7 +601,7 @@ int dList::findMinReturnPtr(dNode* list, int &min, dNode* &ptr)
 	return 0;
 }
 
-int dList::findMaxReturnPos(dNode* list, int &max, int &pos)
+int dList::returnMaxPos(dNode* list, int &max, int &pos)
 {
 	if (list == nullptr) return 1;
 
@@ -625,7 +622,7 @@ int dList::findMaxReturnPos(dNode* list, int &max, int &pos)
 	return 0;
 }
 
-int dList::findMaxReturnPtr(dNode* list, int &max, dNode* &ptr)
+int dList::returnMaxPtr(dNode* list, int &max, dNode* &ptr)
 {
 	if (list == nullptr) return 1;
 
@@ -644,7 +641,7 @@ int dList::findMaxReturnPtr(dNode* list, int &max, dNode* &ptr)
 	return 0;
 }
 
-int dList::findTailReturnPos(dNode* list, int &pos)
+int dList::returnTailPos(dNode* list, int &pos)
 {
 	if (list == nullptr) return 1;
 
@@ -660,7 +657,7 @@ int dList::findTailReturnPos(dNode* list, int &pos)
 	} while (list != nullptr);
 }
 
-int dList::findTailReturnPtr(dNode* list, dNode* &ptr)
+int dList::returnTailPtr(dNode* list, dNode* &ptr)
 {
 	if (list == nullptr) return 1;
 
@@ -674,7 +671,7 @@ int dList::findTailReturnPtr(dNode* list, dNode* &ptr)
 	} while (list != nullptr);
 }
 
-int dList::movePosToFront(dNode** list, int pos)
+int dList::movePosFront(dNode** list, int pos)
 {
 	if (*list == nullptr) return 1;
 	if (pos == 0) return -2; // no action needed.
@@ -713,7 +710,7 @@ int dList::movePosToFront(dNode** list, int pos)
 	return -1;
 }
 
-int dList::movePtrToFront(dNode** list, dNode* ptr)
+int dList::movePtrFront(dNode** list, dNode* ptr)
 {
 	if (*list == nullptr) return 1;
 	if (ptr == nullptr) return 2;
@@ -742,7 +739,7 @@ int dList::movePtrToFront(dNode** list, dNode* ptr)
 	return -1;
 }
 
-int dList::movePosToBack(dNode** list, int pos)
+int dList::movePosBack(dNode** list, int pos)
 {
 	if (*list == nullptr) return 1;
 
@@ -804,7 +801,7 @@ int dList::movePosToBack(dNode** list, int pos)
 	}
 }
 
-int dList::movePtrToBack(dNode** list, dNode* ptr)
+int dList::movePtrBack(dNode** list, dNode* ptr)
 {
 	if (*list == nullptr) return 1;
 	if (ptr == nullptr) return 2;
@@ -907,6 +904,55 @@ int dList::movePosUp(dNode** list, int pos)
 	return -1;
 }
 
+int dList::movePosDown(dNode** list, int pos)
+{
+	if (*list == nullptr) return 1;
+
+	dNode* head = *list;
+	// check if list has only one node.
+	if (head->next == nullptr) return 5;
+	// find pos in list.
+	int tempPos = 0;
+	do {
+		dNode* curr = *list;
+		if (tempPos == pos)
+		{
+			// check if pos is tail.
+			if (curr->next == nullptr)
+			{
+				*list = head;
+				return -2; // no action needed.
+			}
+			dNode* before = curr->prev; // node before swapped nodes.
+			dNode* next = curr->next; // node after pos in original list.
+			dNode* after = curr->next->next; // node after swapped nodes.
+			if (curr == head)
+			{
+				next->prev = nullptr;
+				head = next;
+			}
+			else
+			{
+				before->next = next;
+				next->prev = before;
+			}
+			next->next = curr;
+			curr->prev = next;
+			curr->next = after;
+			if (after != nullptr)
+			{
+				after->prev = curr;
+			}
+			*list = head;
+			return 0;
+		}
+		++tempPos;
+		*list = curr->next;
+	} while (*list != nullptr);
+	*list = head; // pos not in list.
+	return -1;
+}
+
 int dList::movePtrUp(dNode** list, dNode* ptr)
 {
 	if (*list == nullptr) return 1;
@@ -967,55 +1013,6 @@ int dList::movePtrUp(dNode** list, dNode* ptr)
 		}
 		*list = curr->next;
 	} while (*list != nullptr);
-	return -1;
-}
-
-int dList::movePosDown(dNode** list, int pos)
-{
-	if (*list == nullptr) return 1;
-
-	dNode* head = *list;
-	// check if list has only one node.
-	if (head->next == nullptr) return 5;
-	// find pos in list.
-	int tempPos = 0;
-	do {
-		dNode* curr = *list;
-		if (tempPos == pos)
-		{
-			// check if pos is tail.
-			if (curr->next == nullptr)
-			{
-				*list = head;
-				return -2; // no action needed.
-			}
-			dNode* before = curr->prev; // node before swapped nodes.
-			dNode* next = curr->next; // node after pos in original list.
-			dNode* after = curr->next->next; // node after swapped nodes.
-			if (curr == head)
-			{
-				next->prev = nullptr;
-				head = next;
-			}
-			else
-			{
-				before->next = next;
-				next->prev = before;
-			}
-			next->next = curr;
-			curr->prev = next;
-			curr->next = after;
-			if (after != nullptr)
-			{
-				after->prev = curr;
-			}
-			*list = head;
-			return 0;
-		}
-		++tempPos;
-		*list = curr->next;
-	} while (*list != nullptr);
-	*list = head; // pos not in list.
 	return -1;
 }
 
@@ -1294,8 +1291,8 @@ int dList::shuffle(dNode** list)
 
 		dNode* ptr1 = nullptr;
 		dNode* ptr2 = nullptr;
-		returnPtrByPos(*list, position1, ptr1);
-		returnPtrByPos(*list, position2, ptr2);
+		returnPosPtr(*list, ptr1, position1);
+		returnPosPtr(*list, ptr2, position2);
 		swap(list, ptr1, ptr2);
 		++temp;
 	} while (temp < pow(nodeCount, 2));
